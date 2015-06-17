@@ -1,0 +1,20 @@
+{
+  "name": "autoStatus",
+  "version": "0.1.0",
+  "authors": [
+    "r4mkum4r <r4mkum4r.r@gmail.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {},
+  "dependencies": {
+    "moment": "~2.10.2"
+  }
+}
