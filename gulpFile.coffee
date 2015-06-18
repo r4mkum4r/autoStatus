@@ -10,6 +10,7 @@ args		= 	require('yargs')
 					.default('port', 8001)
 					.argv
 spawn		= 	require('child_process').spawn
+exec		= 	require('child_process').exec
 path 		= 	require 'path'
 coffee 	= 	require 'gulp-coffee'
 less 		= 	require 'gulp-less'
@@ -104,6 +105,8 @@ gulp.task 'inject', ->
 gulp.task 'demon', ->
 	port    = port || args.port
 	python  = spawn 'python', ["-m", "SimpleHTTPServer", "#{port}"], { stdio : 'inherit', stderr: 'inherit'}
+
+	exec("open http://localhost:#{port}")
 
 gulp.task 'watch', ->
 	gulp.watch paths.src.js, ['js']
