@@ -127,4 +127,4 @@ gulp.task 'watch', ->
 
 gulp.task 'default', ->
 	port  = args.port
-	sequence 'js', 'css', 'inject', 'watch', 'demon'
+	sequence 'coffee', 'stylus', 'inject', 'watch', 'demon'
