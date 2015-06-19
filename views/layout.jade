@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title= title
+    //- inject:css
+    link(rel='stylesheet', href='/public/stylesheets/styles.css')
+    //- endinject
+
+  body
+    block content
+
+    //- inject:js
+    script(src='/public/javascripts/app.js')
+    //- endinject
