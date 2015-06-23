@@ -11,13 +11,14 @@ args			= 	require('yargs')
 								.argv
 spawn			= 	require('child_process').spawn
 exec			= 	require('child_process').exec
-fs 				= 	require('fs')
+fs 				= 	require 'fs'
 path 			= 	require 'path'
 coffee 		= 	require 'gulp-coffee'
 less 			= 	require 'gulp-less'
 sass 			= 	require 'gulp-sass'
 stylus 		= 	require 'gulp-stylus'
 clean 		= 	require 'gulp-clean'
+concat 		= 	require 'gulp-concat'
 nib 			= 	require 'nib'
 del 			= 	require 'del'
 mainBowerFiles	= 	require 'main-bower-files'
@@ -32,6 +33,9 @@ destBase 		= 	"public/"
 destBaseJS 	= 	"#{destBase}javascripts/"
 destBaseCSS = 	"#{destBase}stylesheets/"
 
+vendorsPathJS = 	"#{destBase}/vendors/javascripts/"
+vendorsPathCSS = 	"#{destBase}/vendors/stylesheets/"
+
 paths  			= 	{
 	src :
 		js 		: "#{srcBaseJS}*.js"
@@ -43,6 +47,9 @@ paths  			= 	{
 	dest :
 		js 		: "#{destBaseJS}**/*.js"
 		css		: "#{destBaseCSS}**/*.css"
+	vendors :
+		js : "#{vendorsPathJS}**/*.js"
+		css : "#{vendorsPathJS}**/*.css"
 }
 
 availTasks 		= ['coffee', 'stylus', 'less', 'sass', 'js', 'css']
@@ -75,6 +82,14 @@ gulp.task 'cleanCSS', ->
 
 gulp.task 'cleanJS', ->
 	gulp.src paths.dest.js, {read: false}
+		.pipe(clean())
+
+gulp.task 'cleanVendor:js', ->
+	gulp.src paths.vendors.js, {read: false}
+		.pipe(clean())
+
+gulp.task 'cleanVendor:css', ->
+	gulp.src paths.vendors.css, {read: false}
 		.pipe(clean())
 
 gulp.task 'js', ['cleanJS'], ->
@@ -125,17 +140,28 @@ gulp.task 'inject:author', ->
 gulp.task 'inject:vendor', ->
 	_target  = gulp.src './views/layout.jade'
 	_includes = JSON.parse(getIncludes()).deps
-	_sources = gulp.src(_includes)
+
+	gulp.src(_includes)
+		.pipe(concat('vendors.js'))
+		.pipe(gulp.dest(vendorsPathJS))
+
+	_sources = gulp.src(paths.vendors.js, {read: false})
 
 	_target
-		.pipe inject(_sources, {
-			name : 'vendor'
+		.pipe inject(_sources,{
+			name : 'vendor',
+			transform : (filepath)->
+				filepath = getPath(filepath)
+				if filepath.slice(-2) is "js"
+					return "script(src=\'#{filepath}\')"
+				else
+					return "link(rel=\'stylesheet\', href=\'#{filepath}\')"
 		})
-		.pipe gulp.dest "./views"
+		.pipe gulp.dest './views'
 
 
 gulp.task 'inject', ->
-	sequence 'inject:vendor', 'inject:author'
+	sequence 'cleanVendor:js', 'inject:vendor', 'inject:author'
 
 
 gulp.task 'demon', ->
@@ -152,7 +178,7 @@ gulp.task 'watch', ->
 	gulp.watch paths.src.stylus, ['stylus']
 	gulp.watch paths.src.sass, ['sass']
 
-	gulp.watch "#{destBase}**/*.*", ['inject']
+	# gulp.watch "#{destBase}**/*.*", ['inject']
 
 
 gulp.task 'default', ->
