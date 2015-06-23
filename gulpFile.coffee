@@ -49,7 +49,7 @@ paths  			= 	{
 		css		: "#{destBaseCSS}**/*.css"
 	vendors :
 		js : "#{vendorsPathJS}**/*.js"
-		css : "#{vendorsPathJS}**/*.css"
+		css : "#{vendorsPathCSS}**/*.css"
 }
 
 availTasks 		= ['coffee', 'stylus', 'less', 'sass', 'js', 'css']
@@ -138,14 +138,19 @@ gulp.task 'inject:author', ->
 		.pipe gulp.dest "./views/"
 
 gulp.task 'inject:vendor', ->
-	_target  = gulp.src './views/layout.jade'
-	_includes = JSON.parse(getIncludes()).deps
+	_target  	= gulp.src './views/layout.jade'
+	_includesJS = JSON.parse(getIncludes()).deps.js
+	_includesCSS = JSON.parse(getIncludes()).deps.css
 
-	gulp.src(_includes)
+	gulp.src(_includesJS)
 		.pipe(concat('vendors.js'))
 		.pipe(gulp.dest(vendorsPathJS))
 
-	_sources = gulp.src(paths.vendors.js, {read: false})
+	gulp.src(_includesCSS)
+		.pipe(concat('vendors.css'))
+		.pipe(gulp.dest(vendorsPathCSS))
+
+	_sources = gulp.src([paths.vendors.js, paths.vendors.css], {read: false})
 
 	_target
 		.pipe inject(_sources,{
