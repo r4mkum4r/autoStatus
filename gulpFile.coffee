@@ -166,7 +166,7 @@ gulp.task 'inject:vendor', ->
 
 
 gulp.task 'inject', ->
-	sequence 'cleanVendor:js', 'cleanVendor:CSS', 'inject:vendor', 'inject:author'
+	sequence 'cleanVendor:js', 'cleanVendor:css', 'inject:vendor', 'inject:author'
 
 
 gulp.task 'demon', ->
