@@ -2,7 +2,7 @@ doctype html
 html
   head
     title= title
-    //- inject:vendor:css
+    //- vendor:css
     //- endinject
 
     //- inject:css
@@ -12,7 +12,13 @@ html
   body
     block content
 
-    //- inject:vendor:js
+    //- vendor:js
+    script(src="/bower_components/jquery/dist/jquery.js")
+    script(src="/bower_components/angularjs/angular.js")
+    script(src="/bower_components/bootstrap/dist/js/bootstrap.js")
+    script(src="/bower_components/lodash/lodash.js")
+    script(src="/bower_components/moment/moment.js")
+    script(src="/bower_components/angular-ckeditor/angular-ckeditor.js")
     //- endinject
 
     //- inject:js

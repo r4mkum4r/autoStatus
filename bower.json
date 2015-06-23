@@ -17,6 +17,8 @@
   "dependencies": {
     "moment": "~2.10.2",
     "angularjs": "~1.4.1",
-    "lodash": "~3.9.3"
+    "lodash": "~3.9.3",
+    "bootstrap": "~3.3.5",
+    "angular-ckeditor": "~0.4.2"
   }
 }

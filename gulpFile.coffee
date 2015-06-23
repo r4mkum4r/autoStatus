@@ -2,35 +2,37 @@ gulp    	= 	require 'gulp'
 watch 		= 	require 'gulp-watch'
 sequence 	= 	require 'gulp-run-sequence'
 inject 		= 	require 'gulp-inject'
-_ 			= 	require 'lodash'
-args		= 	require('yargs')
-					.alias('coffee', 'coffee-script')
-					.alias('styl', 'stylus')
-					.boolean(['coffee', 'stylus', 'less', 'sass'])
-					.default('port', 8001)
-					.argv
-spawn		= 	require('child_process').spawn
-exec		= 	require('child_process').exec
-path 		= 	require 'path'
+_ 				= 	require 'lodash'
+args			= 	require('yargs')
+								.alias('coffee', 'coffee-script')
+								.alias('styl', 'stylus')
+								.boolean(['coffee', 'stylus', 'less', 'sass'])
+								.default('port', 8001)
+								.argv
+spawn			= 	require('child_process').spawn
+exec			= 	require('child_process').exec
+fs 				= 	require('fs')
+path 			= 	require 'path'
 coffee 		= 	require 'gulp-coffee'
-less 		= 	require 'gulp-less'
-sass 		= 	require 'gulp-sass'
+less 			= 	require 'gulp-less'
+sass 			= 	require 'gulp-sass'
 stylus 		= 	require 'gulp-stylus'
 clean 		= 	require 'gulp-clean'
-nib 		= 	require 'nib'
-del 		= 	require 'del'
-port 		= 	null
+nib 			= 	require 'nib'
+del 			= 	require 'del'
+mainBowerFiles	= 	require 'main-bower-files'
+port 			= 	null
 tasks 		= 	null
 
-srcBase 	= 	"src/"
+srcBase 		= 	"src/"
 srcBaseJS 	= 	"#{srcBase}js/**/"
 srcBaseCSS  = 	"#{srcBase}css/**/"
 
-destBase 	= 	"public/"
+destBase 		= 	"public/"
 destBaseJS 	= 	"#{destBase}javascripts/"
 destBaseCSS = 	"#{destBase}stylesheets/"
 
-paths  	= 	{
+paths  			= 	{
 	src :
 		js 		: "#{srcBaseJS}*.js"
 		coffee	: "#{srcBaseJS}*.coffee"
@@ -55,6 +57,17 @@ getTasks = (args)->
 				_tasks.push task
 
 	_.uniq _tasks
+
+getIncludes = ->
+	fs.readFileSync('includes.json', {
+		encoding : 'utf8'
+	})
+
+getPath = (path)->
+	_path = path.split('/')
+	_path.splice(1,1)
+
+	return _path.join('/')
 
 gulp.task 'cleanCSS', ->
 	gulp.src paths.dest.css, {read: false}
@@ -94,23 +107,36 @@ gulp.task 'sass', ['cleanCSS'], ->
 		.pipe(sass())
 		.pipe(gulp.dest("#{destBaseCSS}"))
 
-gulp.task 'inject', ->
+gulp.task 'inject:author', ->
 	_target  = gulp.src './views/layout.jade'
-	_sources = gulp.src(["#{paths.dest.css}", "#{paths.dest.js}"])
+	_sources = gulp.src(["#{paths.dest.css}", "#{paths.dest.js}"], read: false)
 
 	_target
 		.pipe inject(_sources,{
-			read: false,
 			transform : (filepath)->
-				filepath = filepath.split('/')
-				filepath.splice(1,1)
-				filepath = filepath.join('/')
+				filepath = getPath(filepath)
 				if filepath.slice(-2) is "js"
 					return "script(src=\'#{filepath}\')"
 				else
 					return "link(rel=\'stylesheet\', href=\'#{filepath}\')"
 		})
 		.pipe gulp.dest "./views/"
+
+gulp.task 'inject:vendor', ->
+	_target  = gulp.src './views/layout.jade'
+	_includes = JSON.parse(getIncludes()).deps
+	_sources = gulp.src(_includes)
+
+	_target
+		.pipe inject(_sources, {
+			name : 'vendor'
+		})
+		.pipe gulp.dest "./views"
+
+
+gulp.task 'inject', ->
+	sequence 'inject:vendor', 'inject:author'
+
 
 gulp.task 'demon', ->
 	port    = port || args.port
