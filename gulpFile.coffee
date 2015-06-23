@@ -96,11 +96,15 @@ gulp.task 'sass', ['cleanCSS'], ->
 
 gulp.task 'inject', ->
 	_target  = gulp.src './views/layout.jade'
-	_sources = gulp.src(["#{paths.dest.css}", "#{paths.dest.js}"], {read: false})
+	_sources = gulp.src(["#{paths.dest.css}", "#{paths.dest.js}"])
 
 	_target
 		.pipe inject(_sources,{
+			read: false,
 			transform : (filepath)->
+				filepath = filepath.split('/')
+				filepath.splice(1,1)
+				filepath = filepath.join('/')
 				if filepath.slice(-2) is "js"
 					return "script(src=\'#{filepath}\')"
 				else
