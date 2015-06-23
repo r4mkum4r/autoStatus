@@ -166,7 +166,7 @@ gulp.task 'inject:vendor', ->
 
 
 gulp.task 'inject', ->
-	sequence 'cleanVendor:js', 'inject:vendor', 'inject:author'
+	sequence 'cleanVendor:js', 'cleanVendor:CSS', 'inject:vendor', 'inject:author'
 
 
 gulp.task 'demon', ->
@@ -183,7 +183,7 @@ gulp.task 'watch', ->
 	gulp.watch paths.src.stylus, ['stylus']
 	gulp.watch paths.src.sass, ['sass']
 
-	# gulp.watch "#{destBase}**/*.*", ['inject']
+	gulp.watch "#{destBase}**/*.*", ['inject']
 
 
 gulp.task 'default', ->
