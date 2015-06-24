@@ -13,7 +13,11 @@
     "test",
     "tests"
   ],
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "~2.2.5",
+    "chai": "~3.0.0",
+    "sinon": "~1.15.3"
+  },
   "dependencies": {
     "moment": "~2.10.2",
     "angularjs": "~1.4.1",
