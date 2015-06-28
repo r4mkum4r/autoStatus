@@ -12,10 +12,12 @@
     "express": "~4.12.4",
     "jade": "~1.9.2",
     "morgan": "~1.5.3",
+    "node-ckeditor": "^4.3.2",
     "serve-favicon": "~2.2.1"
   },
   "devDependencies": {
     "chai": "^3.0.0",
+    "gulp-angular-filesort": "^1.1.1",
     "gulp-concat": "^2.5.2",
     "gulp-karma": "0.0.4",
     "karma": "^0.12.37",

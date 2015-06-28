@@ -19,7 +19,8 @@
     "angularjs": "~1.4.1",
     "lodash": "~3.9.3",
     "bootstrap": "~3.3.5",
-    "angular-ckeditor": "~0.4.2",
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "ckeditor": "~4.4.7",
+    "angular-ckeditor": "~0.4.2"
   }
 }

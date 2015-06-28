@@ -1,7 +1,37 @@
 extends layout
 
 block content
-  div.page-header
-    h1 AutoStatus - 
-      small Automated Status Manager
+  .status.col-md-offset-1(ng-controller="statusCtrl")
+    form(name="statusForm", no-validate, ng-submit="submit()")
+      .row
+        .col-md-6
+          div.form-horizontal
+            div.form-group
+              label.col-md-2.text-primary(for="user") User : 
+              select#user.col-md-6.well(name="userSelect", ng-model="status.user")
+                option(value="") Select your name
+                optgroup(label="Name")
+                  option(value="1") Ram
+                  option(value="2") Pankaj
+                  option(value="3") Adwitiya
+                  option(value="4") Rani
+                  option(value="5") Madhuri
+      .row
+        .col-md-6
+          div.form-group
+            label.text-primary(for="today") What was done Today :
+            div(ckeditor="options",ng-model="status.today")
+        .col-md-6
+          div.form-group
+            label.text-primary(for="tomorrow") What is planned for tomorrow :
+            div(ckeditor="options",ng-model="status.tomorrow")
+      .row
+        .col-md-6
+          div.form-group
+            label.text-primary(for="risks") Risks :
+            div(ckeditor="options",ng-model="status.risks")
+      .row
+        .col-md-3
+          button(name="submit", value="submit").btn-primary.btn Submit
+      
   

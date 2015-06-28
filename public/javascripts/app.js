@@ -1,3 +1,9 @@
-var app;
+angular.module('Services', []);
 
-app = angular.module('autoStatus', []);
+angular.module('Controllers', []);
+
+angular.module('Directives', []);
+
+angular.module('Filters', []);
+
+angular.module('autoStatus', ['ckeditor', 'Services', 'Controllers', 'Directives', 'Filters']);

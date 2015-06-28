@@ -8,13 +8,15 @@
       "bower_components/bootstrap/dist/js/bootstrap.js",
       "bower_components/lodash/lodash.js",
       "bower_components/moment/moment.js",
+      "node_modules/node-ckeditor/ckeditor/ckeditor.js",
       "bower_components/angular-ckeditor/angular-ckeditor.js"
 
     ],
 
     "css" : [
       "bower_components/bootstrap/dist/css/bootstrap.min.css",
-      "bower_components/bootstrap/dist/css/bootstrap-theme.min.css"
+      "bower_components/bootstrap/dist/css/bootstrap-theme.min.css",
+      "bower_components/ckeditor/contents.css"
     ]
   
   }

@@ -11,12 +11,19 @@ html(ng-app="autoStatus", ng-cloak)
     //- endinject
 
   body
-    block content
-
+    div.container-fluid
+        .row
+            .col-md-12
+                div.page-header
+                    h1 AutoStatus - 
+                        small Automated Status Manager
+        block content
     //- vendor:js
     script(src='/vendors/javascripts/vendors.js')
     //- endinject
 
     //- inject:js
     script(src='/javascripts/app.js')
+    script(src='/javascripts/Services/statusSvc.js')
+    script(src='/javascripts/Controllers/statusCtrl.js')
     //- endinject

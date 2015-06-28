@@ -19,6 +19,7 @@ sass 			= 	require 'gulp-sass'
 stylus 		= 	require 'gulp-stylus'
 clean 		= 	require 'gulp-clean'
 concat 		= 	require 'gulp-concat'
+ngFileSort = 	require 'gulp-angular-filesort'
 nib 			= 	require 'nib'
 del 			= 	require 'del'
 mainBowerFiles	= 	require 'main-bower-files'
@@ -124,16 +125,19 @@ gulp.task 'sass', ['cleanCSS'], ->
 
 gulp.task 'inject:author', ->
 	_target  = gulp.src './views/layout.jade'
-	_sources = gulp.src(["#{paths.dest.css}", "#{paths.dest.js}"], read: false)
+	_sourcesJS = gulp.src(["#{paths.dest.js}"]).pipe(ngFileSort())
+	_sourcesCSS = gulp.src(["#{paths.dest.css}"])
 
 	_target
-		.pipe inject(_sources,{
+		.pipe inject(_sourcesJS,{
 			transform : (filepath)->
 				filepath = getPath(filepath)
-				if filepath.slice(-2) is "js"
-					return "script(src=\'#{filepath}\')"
-				else
-					return "link(rel=\'stylesheet\', href=\'#{filepath}\')"
+				return "script(src=\'#{filepath}\')"
+		})
+		.pipe inject(_sourcesCSS,{
+			transform: (filepath)->
+				filepath = getPath(filepath)
+				return "link(rel=\'stylesheet\', href=\'#{filepath}\')"
 		})
 		.pipe gulp.dest "./views/"
 
@@ -166,12 +170,12 @@ gulp.task 'inject:vendor', ->
 
 
 gulp.task 'inject', ->
-	sequence 'cleanVendor:js', 'cleanVendor:css', 'inject:vendor', 'inject:author'
+	sequence 'inject:vendor', 'inject:author'
 
 
 gulp.task 'demon', ->
 	port    = port || args.port
-	python  = spawn 'node', ["app.js"], { stdio : 'inherit', stderr: 'inherit'}
+	python  = spawn 'nodemon', ["app.js"], { stdio : 'inherit', stderr: 'inherit'}
 
 	exec("open http://localhost:3000")
 
@@ -188,4 +192,4 @@ gulp.task 'watch', ->
 
 gulp.task 'default', ->
 	port  = args.port
-	sequence 'coffee', 'stylus', 'inject', 'watch', 'demon'
+	sequence 'coffee', 'stylus', 'cleanVendor:js', 'cleanVendor:css', 'inject', 'watch'
