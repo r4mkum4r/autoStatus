@@ -8,7 +8,7 @@ block content
           div.form-horizontal
             div.form-group
               label.col-md-2.text-primary(for="user") User : 
-              select#user.col-md-6.well(name="userSelect", ng-model="status.user")
+              select#user.col-md-6.well(name="userSelect", ng-model="status.user", required)
                 option(value="") Select your name
                 optgroup(label="Name")
                   option(value="1") Ram
@@ -20,16 +20,16 @@ block content
         .col-md-6
           div.form-group
             label.text-primary(for="today") What was done Today :
-            div(ckeditor="options",ng-model="status.today")
+            textarea(ckeditor="options",ng-model="status.today",required)
         .col-md-6
           div.form-group
             label.text-primary(for="tomorrow") What is planned for tomorrow :
-            div(ckeditor="options",ng-model="status.tomorrow")
+            textarea(ckeditor="options",ng-model="status.tomorrow",required)
       .row
         .col-md-6
           div.form-group
             label.text-primary(for="risks") Risks :
-            div(ckeditor="options",ng-model="status.risks")
+            textarea(ckeditor="options",ng-model="status.risks",required)
       .row
         .col-md-3
           button(name="submit", value="submit").btn-primary.btn Submit
