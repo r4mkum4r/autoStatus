@@ -7,7 +7,7 @@ block content
         .col-md-6
           div.form-horizontal
             div.form-group
-              label.col-md-2.text-primary(for="user") User : 
+              label.col-md-2.text-primary(for="user") User :
               select#user.col-md-6.well(name="userSelect", ng-model="status.user")
                 option(value="") Select your name
                 optgroup(label="Name")
@@ -17,21 +17,17 @@ block content
                   option(value="4") Rani
                   option(value="5") Madhuri
       .row
-        .col-md-6
-          div.form-group
-            label.text-primary(for="today") What was done Today :
-            div(ckeditor="options",ng-model="status.today")
-        .col-md-6
-          div.form-group
-            label.text-primary(for="tomorrow") What is planned for tomorrow :
-            div(ckeditor="options",ng-model="status.tomorrow")
-      .row
-        .col-md-6
-          div.form-group
-            label.text-primary(for="risks") Risks :
-            div(ckeditor="options",ng-model="status.risks")
-      .row
         .col-md-3
+          div.form-group
+            button(type="button", value="today", class="button") What was done Today :
+        .col-md-3
+          div.form-group
+            button(type="button", value="tomorrow", class="button") What is planned for tomorrow :
+        .col-md-3
+          div.form-group
+            button(type="button", value="risks", class="button") Risks
+      .row
+        .col-md-2.col-md-offset-3
           button(name="submit", value="submit").btn-primary.btn Submit
-      
-  
+
+
